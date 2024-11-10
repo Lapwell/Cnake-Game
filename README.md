@@ -1,15 +1,13 @@
 # Cnake Man
 
-A project to learn C. Based on classic snake with Pacman inspired levels.
-
+A project to learn C. Based on classic snake with Pacman inspired levels and mechanics.
 
 
 ## Description
 
 A C project using Raylib to learn game development and the C programming language.
 Snake like player mechanics and Pacman-type levels. Collect fruits and powerups to complete levels while avoiding hazards.
-
-
+<br/><br/>
 
 ## Getting Started
 
@@ -30,15 +28,13 @@ cmake --build .
 ### Executing program
 
 * Run ./cnake_man
-
-
+<br/><br/>
 
 ## Help
 
 * Check if you have raylib installed correctly.
 * Check CMakeList.txt is configured correctly for your platform.
-
-
+<br/><br/>
 
 ## Authors
 
@@ -48,16 +44,15 @@ Lapwell/Byron.c
 
 
 ## Version History
+* 0.3
+    * Bug fixes
+    * Refactor of entity spawning
+    * Added Bouncer and Patroller enemy types
 
 * 0.2
     * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
 * 0.1
     * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
