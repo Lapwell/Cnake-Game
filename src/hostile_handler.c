@@ -5,7 +5,6 @@
 #include "char_to_int_entity.h"
 #include "global_defines.h"
 #include "wall_collide.h"
-#include <stdio.h>
 
 void updateHostile(Entity *entity, Tile level[ROWS][COLS]) {
   int *direction = &entity->direction;
@@ -34,7 +33,6 @@ void updateHostile(Entity *entity, Tile level[ROWS][COLS]) {
     case PATROLLER:
       int backwards = 0;
       int initial_direction = *direction;
-      printf("FIRST DIRECTION:%i\n", *direction);
       // If the direction is either up or right, add 2 to make is the opposite dir.
       // If it's left or down, sub 2 to make it the opposite dir.
       if (*direction == UP || *direction == RIGHT) {
@@ -42,7 +40,6 @@ void updateHostile(Entity *entity, Tile level[ROWS][COLS]) {
       } else {
         backwards = *direction - 2;
       }
-      printf("DIRECTION: %i\n\n", *direction);
 
       // While the tile in the new spot is a wall, rotate around to find a valid route.
       // If we rotate 180, ignore that direction, we don't move backwards.
