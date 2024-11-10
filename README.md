@@ -1,12 +1,7 @@
 # Cnake Man
 
-A project to learn C. Based on classic snake with Pacman inspired levels and mechanics.
-
-
-## Description
-
-A C project using Raylib to learn game development and the C programming language.
-Snake like player mechanics and Pacman-type levels. Collect fruits and powerups to complete levels while avoiding hazards.
+A project to learn C and Raylib.
+Based on classic snake with Pacman inspired levels and mechanics. Collect fruits and powerups to complete levels while avoiding hazards.
 <br/><br/><br/>
 
 ## Getting Started
