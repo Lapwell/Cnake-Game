@@ -23,10 +23,19 @@ void updateHostile(Entity *entity, Tile level[ROWS][COLS]) {
     // Bouncer just inverts its direciton on wall collisions.
     case BOUNCER:
       if (is_wall_collide) {
-        if (*direction == RIGHT) {
-          *direction = LEFT;
-        } else {
-          *direction = RIGHT;
+        switch (*direction) {
+          case UP:
+            *direction = DOWN;
+            break;
+          case DOWN:
+            *direction = UP;
+            break;
+          case LEFT:
+            *direction = RIGHT;
+            break;
+          case RIGHT:
+            *direction = LEFT;
+            break;
         }
       }
       break;

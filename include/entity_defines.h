@@ -10,23 +10,22 @@
 #define HAZARD '&'
 #define EXIT '^'
 #define FRUIT '$'
+#define FRUIT_INT 0 // Entity array index for fruit
 #define POWERUP '%'
+#define POWERUP_INT 1
 #define ENEMY '!'
-
-#define LIST_FRUIT 0
-#define LIST_POWERUP 1
-
+#define ENEMY_INT 2
 
 #define BOUNCER_V 'B' // Used for parsing the level data. Moves vertically
 #define BOUNCER_H 'b' // Like previous line, but moves horizontal.
-#define BOUNCER 2 // Used in the entity list array.
+#define BOUNCER 3 // Used in the entity list array.
 
 #define PATROLLER_V 'P'
 #define PATROLLER_H 'p'
-#define PATROLLER 3
+#define PATROLLER 4
 
 #define HUNTER_V 'H'
 #define HUNTER_H 'h'
-#define HUNTER 4
+#define HUNTER 5
 
 #endif // !ENTITY_DEFINES_

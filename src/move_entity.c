@@ -8,18 +8,18 @@ void moveEntity(Rectangle *rect, int *direction) {
   switch (*direction) {
     case UP:
       rect->y -= TILE_SIZE;
-      return;
+      break;
     case DOWN:
       rect->y += TILE_SIZE;
-      return;
+      break;
     case LEFT:
       rect->x -= TILE_SIZE;
-      return;
+      break;
     case RIGHT:
       rect->x += TILE_SIZE;
-      return;
+      break;
     case STILL:
-      return;
+      break;
   }
 }
 
@@ -27,17 +27,17 @@ void movePoint(Vector2 *point, int *direction) {
   switch (*direction) {
     case UP:
       point->y -= TILE_SIZE;
-      return;
+      break;
     case DOWN:
       point->y += TILE_SIZE;
-      return;
+      break;
     case LEFT:
       point->x -= TILE_SIZE;
-      return;
+      break;
     case RIGHT:
       point->x += TILE_SIZE;
-      return;
+      break;
     case STILL:
-      return;
+      break;
   }
 }

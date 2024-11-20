@@ -1,10 +1,11 @@
+#include "raylib.h"
 #include "hostile_handler.h"
 #include "entity_defines.h"
+#include "title_screen.h"
 #include "level_loader.h"
 #include "arr_length.h"
 #include "global_defines.h"
 #include "global_structs.h"
-#include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -23,6 +24,14 @@
 Player player = {.direction = RIGHT, .powerup = 0, .body_len = 1,
                  .rect = {0, 0, SNAKE_SIZE, SNAKE_SIZE}};
 Entity fruit;
+
+/*
+ * Entities[][]
+ *
+ * Index 0, fruits
+ * Index 1, powerups
+ * Index 2, enemies
+ */
 Entity entities[ENTITY_TYPES][ENTITY_COUNT];
 Tile level[ROWS][COLS];
 Entity *snake_body;
@@ -50,8 +59,6 @@ void gameOver(int end_state) {
     DrawText("YOU WIN", WINDOWW / 2 - text_width / 2, WINDOWH / 3,
               BIG_FONT, GREEN);
     EndDrawing();
-    WaitTime(3);
-    CloseWindow();
   } else {
     BeginDrawing();
     ClearBackground(BLACK);
@@ -59,9 +66,10 @@ void gameOver(int end_state) {
     DrawText("GAME OVER", WINDOWW / 2 - text_width / 2, WINDOWH / 3,
               BIG_FONT, RED);
     EndDrawing();
-    WaitTime(3);
-    CloseWindow();
   }
+  WaitTime(3);
+  CloseWindow();
+  exit(0);
 }
 
 /* displayUI()
@@ -119,9 +127,9 @@ void editSnake(bool grow) {
       exit(1);
     }
     player.body_len++;
-    length++;
-    snake_body[length - 1].colour = GREEN;
-    snake_body[length - 1].rect = (Rectangle) {-100, -100, SNAKE_SIZE, SNAKE_SIZE};
+    snake_body[length].colour = GREEN;
+    snake_body[length].rect = (Rectangle) {-100, -100, SNAKE_SIZE, SNAKE_SIZE};
+    snake_body[length].type = PLAYER;
   } else {
     snake_body = realloc(snake_body, (length - 1) * sizeof(Entity));
     if (snake_body == NULL) {
@@ -129,7 +137,6 @@ void editSnake(bool grow) {
       exit(1);
     }
     player.body_len--;
-    length--;
   }
 }
 
@@ -155,29 +162,28 @@ void eventHandler() {
 
   // Check player collision with objects and do something depending
   // on what the object is.
-  for (int r = 0; r < ROWS; r++) {
-    for (int c = 0; c < COLS; c++) {
-      Tile current_tile = level[r][c];
-      if (CheckCollisionRecs(player.rect, current_tile.rect)) {
-        switch (current_tile.type) {
-          case WALL:
-            printf("\nBONK!\n");
-            gameOver(LOSE);
-            break;
-          case PLAYER:
-            printf("\nHow????\n");
-            gameOver(LOSE);
-            break;
-          case EXIT:
-            printf("Exit reached\n");
-            gameOver(WIN);
-            break;
-        }
-      }
+  int player_row, player_col;
+  // Little trick. Since the pos is a multiple of the row/col and TILE_SIZE,
+  // just divide by TILE_SIZE to get the row/col
+  player_row = player.rect.y / TILE_SIZE;
+  player_col = player.rect.x / TILE_SIZE;
+  Tile current_tile = level[player_row][player_col];
+  if (CheckCollisionRecs(player.rect, current_tile.rect)) {
+    switch (current_tile.type) {
+      case WALL:
+        gameOver(LOSE);
+        break;
+      case PLAYER:
+        gameOver(LOSE);
+        break;
+      case EXIT:
+        gameOver(WIN);
+        break;
     }
   }
 
-  // Checking for player collision with various entities
+  // Checking for player collision with various entities.
+  // Can't do the row/col divide by TILE_SIZE because we have to check all hostiles.
   for (int r = 0; r < ENTITY_TYPES; r++) {
     for (int c = 0; c < ENTITY_COUNT; c++) {
       Entity currenty_entity = entities[r][c];
@@ -196,11 +202,18 @@ void eventHandler() {
             break;
           case HAZARD:
             gameOver(LOSE);
+            editSnake(false);
             break;
           case ENEMY:
             gameOver(LOSE);
+            editSnake(false);
             break;
         }
+      }
+    }
+    for (int i = 0; i< player.body_len; i++) {
+      if (CheckCollisionRecs(player.rect, snake_body[i].rect) && snake_body[i].type == PLAYER) {
+        gameOver(LOSE);
       }
     }
   }
@@ -281,13 +294,13 @@ void initGame() {
  *    None
  */
 int main() {
-  //float wait_time = 1.0f; // Easy
-  //float wait_time = 0.64f; //Medium
-  float wait_time = 0.25f; // Hard
+  InitWindow(WINDOWW, WINDOWH, "Cnake Man");
+
+  float difficulty = MEDIUM;
   float previous_time = 0.0f;
   initGame();
-  InitWindow(WINDOWW, WINDOWH, "Cnake Man");
   SetTargetFPS(60);
+  displayTitleScreen(&difficulty);
   while (!WindowShouldClose()) {
     float current_time = GetTime();
     eventHandler();
@@ -295,7 +308,7 @@ int main() {
     ClearBackground(WHITE);
     // Only update game logic once every wait_time.
     // Gets the snake to move 1 tile/s
-    if (current_time - previous_time >= wait_time) {
+    if (current_time - previous_time >= difficulty) {
       previous_time = GetTime();
       updateGame();
     }
@@ -321,7 +334,7 @@ int main() {
     displayUI(level_score, total_score); // This is always rendered last
     EndDrawing();
   }
+//  free(snake_body);
   CloseWindow();
-  free(snake_body);
 }
 

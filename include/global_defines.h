@@ -2,10 +2,17 @@
 #define GLOBAL_DEFINES_
 
 // General defines
-#define BIG_FONT 40
+#define BIG_FONT 60
+#define MEDIUM_FONT 40
 #define SMALL_FONT 20
 #define WINDOWH 1024
 #define WINDOWW 1024
+#define GAME_TITLE "Cnake Man"
+
+// Difficulties
+#define EASY 1.0f
+#define MEDIUM 0.64f
+#define HARD 0.25f
 
 // Level tile defines (types, size, how many)
 #define WALL '#'

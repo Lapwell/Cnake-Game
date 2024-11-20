@@ -49,7 +49,12 @@ void generate_level(const char *file_name, Tile parsed_level[ROWS][COLS],
           parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
                                        TILE_SIZE, TILE_SIZE}, GRAY, WALL};
           break;
+        case FLOOR:
+          parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
+                                       TILE_SIZE, TILE_SIZE}, WHITE, FLOOR};
+          break;
         case PLAYER:
+          // Set the player spawn to a floor tile
           parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
                                        TILE_SIZE, TILE_SIZE}, WHITE, FLOOR};
           player->rect.x = TILE_SIZE * c;
@@ -60,29 +65,25 @@ void generate_level(const char *file_name, Tile parsed_level[ROWS][COLS],
                                        TILE_SIZE, TILE_SIZE}, BLUE, EXIT};
           break;
         case FRUIT:
-          length = entityArrLength(entity_list[0]);
+          length = entityArrLength(entity_list[FRUIT_INT]);
           parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
                                        TILE_SIZE, TILE_SIZE}, WHITE, FLOOR};
-          entity_list[LIST_FRUIT][length] = (Entity){.type = FRUIT, .colour = LIME, .direction = STILL,
+          entity_list[FRUIT_INT][length] = (Entity){.type = FRUIT, .colour = LIME, .direction = STILL,
                                  .rect = {TILE_SIZE * c, TILE_SIZE *r, TILE_SIZE, TILE_SIZE}};
           break;
         case POWERUP:
-          length = entityArrLength(entity_list[1]);
+          length = entityArrLength(entity_list[POWERUP_INT]);
           parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
                                        TILE_SIZE, TILE_SIZE}, WHITE, FLOOR};
-          entity_list[LIST_POWERUP][length] = (Entity){.type = POWERUP, .colour = PURPLE, .direction = STILL,
+          entity_list[POWERUP_INT][length] = (Entity){.type = POWERUP, .colour = PURPLE, .direction = STILL,
                                             .rect = {TILE_SIZE * c, TILE_SIZE *r, TILE_SIZE, TILE_SIZE}};
           break;
         case ENEMY:
-          length = entityArrLength(entity_list[3]);
+          length = entityArrLength(entity_list[ENEMY_INT]);
           parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
                                        TILE_SIZE, TILE_SIZE}, WHITE, FLOOR};
           entity_list[HUNTER][length] = (Entity){.type = ENEMY, .colour = RED, .direction = STILL,
                                             .rect = {TILE_SIZE * c, TILE_SIZE * r, TILE_SIZE, TILE_SIZE}};
-          break;
-        case FLOOR:
-          parsed_level[r][c] = (Tile){{TILE_SIZE * c, TILE_SIZE * r,
-                                       TILE_SIZE, TILE_SIZE}, WHITE, FLOOR};
           break;
         default:
           setEntity(raw_level[r][c], r, c, entity_list);
